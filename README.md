@@ -9,5 +9,6 @@ Administrador de pacientes de veterinaria responsive y persistente
 - React-hook-form
 - react-toast
 - Zustand
+- UUID
 
 ![Preview Img](Preview.jpeg)
