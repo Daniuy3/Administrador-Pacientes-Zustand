@@ -11,9 +11,15 @@ export default function PatientForm() {
     const patients = usePatientStore(state => state.patients);
 
     const { register, handleSubmit, setValue, formState:{errors}, reset } = useForm<DraftPatient>();
+
+    /* Estoy usando esta funcion para saber cuando cambia el Active ID que es cuando voy a editar */
     useEffect(() => {
+
         if(activeId){
+            /* A activePatien le agrego el paciente que coincida con el active id */
             const activePatient = patients.filter(patient => patient.id === activeId)[0];
+
+            /* A los campos en el formulario les asigno el valor del activePatient */
             setValue('name', activePatient.name);
             setValue('caretaker', activePatient.caretaker);
             setValue('email', activePatient.email);
@@ -26,10 +32,12 @@ export default function PatientForm() {
         if(activeId){
             updatePatient(data);
             toast("Paciente Actualizado", {type: "info", autoClose: 2000});
+            /* Notificacion ↑↑ */
         }
         else{
             addPatient(data);
             toast("Paciente Registrado", {type: "success", autoClose: 2000});
+            /* Notificacion ↑↑ */
         }  
         reset();
     }
@@ -59,9 +67,14 @@ export default function PatientForm() {
                         type="text" 
                         placeholder="Nombre del Paciente" 
                         {...register('name', {required: "El nombre del paciente es Obligatorio" })}
+                        /* En register agrego un nuevo campo "name", y lo establezco como required, en caso de no
+                            llenarse se utiliza el mensaje dado para crear un alert */
                     />
                     {errors.name && (
+                        /* Accedo al mensaje de error de este campo solo cuando existe, 
+                        usando este signo  ↓ */
                         <Error>{errors.name?.message}</Error>
+                        /* Alert ↑↑ */
                     )}
                     
                     
@@ -92,6 +105,8 @@ export default function PatientForm() {
                     placeholder="Email de Registro" 
                     {...register('email', {required: "El email es Obligatorio",
                         pattern: {value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Email No Válido"}
+                        /* Pattern es el patron que debe seguir lo qe se escribe en el input, aqui se usa
+                            una expresion regular que representa un email */
                     })}
                 />
                 {errors.email && (<Error>{errors.email?.message}</Error>)}
